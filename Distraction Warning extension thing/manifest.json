@@ -1,0 +1,58 @@
+{
+    "name": "Stay On Task",
+    "version": "1.0",
+    "description": "This is a custom extension to gently remind you about staying on task.",
+    "manifest_version": 2,
+    "author": "Nathan H.",
+    "options_page": "options.html",
+
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "exclude_matches": [
+            "https://classroom.google.com/*",
+            "*://quizlet.com/*",
+            "file://*.pdf",
+            "https://kamiapp.com/*",
+            "*://*.kamihq.com/*",
+            "https://youtube.com/watch",
+            "*://drawings.google.com/*",
+            "*://canvas.apps.chrome/*",
+            "https://kahoot.it/*",
+            "https://kahoot.com/*",
+            "https://docs.google.com/*",
+            "https://mail.google.com/*",
+            "*://*.mcgraw-hill.com/*",
+            "*://*.mheducation.com/*",
+            "https://drive.google.com/*",
+            "*://desmos.com/*",
+            "*://newtab/*",
+            "https://keep.google.com/*",
+            "https://sso.rumba.pk12ls.com/*",
+            "*://useast-www.securly.com/blocked",
+            "https://meet.google.com/*",
+            "*://*.pbs.org/*",
+            "*://space.com/*",
+            "*://welcome.adguard.com/v2/thankyou.html",
+            "https://sites.google.com/jrischools.org/*",
+            "*://en.wikipedia.org/*",
+            "*://*.ucsb.edu/*",
+            "*://*.gov/*",
+            "https://contacts.google.com/*",
+            "*://*.edu/*"
+        ],
+          "css": ["distractionalert.css"],
+          "js": ["distractionalert.js"]
+        }
+      ],
+      "icons": { "16": "icon_16.png",
+        "32": "icon_32.png",
+        "48": "icon_48.png",
+       "128": "icon_128.png" },
+    
+
+       "permissions": [
+        "<all_urls>",
+        "storage"
+      ]
+  }
