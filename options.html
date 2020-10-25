@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Options</title>
+        <script src="options.js"></script>
+    </head>
+    <body>
+        <h1>Options</h1>
+        <div id="generalSettings" class="generalSettings">
+        <h3>General Settings:</h3>
+        Do not run on these sites: 
+        <input id="siteDisableList"></input><br>
+        Do run on these sites: 
+        <input id="siteEnableList"></input><br>
+        Delay Between Popups (ms): 
+        <input type="number" id="popUpDelay">[1000 ms = 1s]</input></div><br><br>
+        <div id="disabledDays" class="disabledDaySettings">
+        <h3>Disable on the weekend and the following days:</h3>
+        <input type="checkbox" id="disableWD1">Monday</input><br>
+        <input type="checkbox" id="disableWD2">Tuesday</input><br>
+        <input type="checkbox" id="disableWD3">Wednesday</input><br>
+        <input type="checkbox" id="disableWD4">Thursday</input><br>
+        <input type="checkbox" id="disableWD5">Friday</input><br><br>
+        </div>
+        <input type="button" id="save" value="Save Changes"></input><br>
+        <div id="status"></div>
+    </body>
+
+</html>
