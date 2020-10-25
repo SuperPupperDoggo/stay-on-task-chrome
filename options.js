@@ -1,8 +1,11 @@
+//Copyright (c) 2020 SuperPupperDoggo. All Rights Reserved.
 
+//  options.js - Script that handles the extension's options page
 
 var sitedisablelist = document.getElementById("sitedisablelist");
 var popupdelay = document.getElementById("popUpDelay");
 
+//Create a list of weekday numbers that is much easier to parse at runtime
 function createDisabledWeekdays(mon,tue,wed,thu,fri) {
 disabledDays = "0,6"
 if (mon == true) {
@@ -22,11 +25,8 @@ if (fri == true) {
 }
 return disabledDays
 }
-
-  // Restores select box and checkbox state using the preferences
-  // stored in chrome.storage.
+//Restores options from chrome.storage
   function restore_options() {
-    // Use default value color = 'red' and likesColor = true.
     chrome.storage.sync.get({
       sitedisablelist: "example.com",
       siteenablelist: "scratch.mit.edu",
@@ -72,7 +72,7 @@ function save_options() {
       // Update status to let user know options were saved.
       var status = document.getElementById('status');
       status.textContent = 'Options saved.';
-      console.trace("Options Saved")
+      console.info("Options Saved")
       setTimeout(function() {
         status.textContent = '';
       }, 750);

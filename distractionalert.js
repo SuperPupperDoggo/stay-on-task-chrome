@@ -1,17 +1,20 @@
-var run
-var dismissCounter = -1
-var disabledDays
-var date = new Date();
-var hostname
-var tlDomain
-var siteDisableList
-var siteEnableList
-var popupDelay = 60000
+//Copyright (c) 2020 SuperPupperDoggo. All Rights Reserved.
+
+//  distractionalert.js - Main script of the Stay On Task Chrome extension
+
+//Setup Variables
+var run = true //Whether or not the popup should appear
+var dismissCounter = -1 //How many times the user has dismissed the popup. It is shown and quickly hidden during page loading to start the setTimeout() loop, thus it is set to -1
+var date = new Date(); //The Current Date. Used for the disabled weekdays option.
+var hostname_full = window.location.hostname //Used for matching against non-hardcoded rules
+var hostname = window.location.hostname.split(".") //splits up the hostname into each of it's pieces. Really only used to get top level domain.
+var tlDomain = hostname[hostname.length-1] //Top Level Domain. Used in special rule cases.
+var siteDisableList = [] //In case setting(s) don't load properly, it will use the default value(s)
+var siteEnableList = ["scratch.mit.edu"]
+var popupDelay = 60000 
 var disabledDays = [0,4,6]
-var navOpen = false
-run = true
-//dismissCounter = -1
-//disabledDays = [0,4,6]
+var navOpen = false //Is the popup open? Used to prevent accedental incrementation of the dismiss counter
+
 
 let overlayelement = document.createElement("div", [id='distractionOverlay']);
 overlayelement.setAttribute("id","distractionOverlay")
@@ -47,6 +50,7 @@ document.body.append(overlayelement)
     popupdelay: 60000,
     disabledWeekDays: "0,6,4"
   }, function(items) {
+    //For some reason despite the variables having been defined outside this function, the values are still lost when the function ends. So I just put everything inside it
     siteDisableList = items.sitedisablelist.split(",")
     siteEnableList = items.siteenablelist.split(",")
     popupDelay = items.popupdelay;
@@ -54,30 +58,21 @@ document.body.append(overlayelement)
     if (disabledDays.indexOf(date.getDay) !== -1) {
       run = false
   }
-  
-  hostname_full = window.location.hostname
-  hostname = window.location.hostname.split(".")
-  tlDomain = hostname[hostname.length-1]
-  console.trace(tlDomain)
-  console.trace(popupDelay)
-console.trace(siteDisableList)
-console.trace(siteEnableList)
-  if (tlDomain == "edu") {
-  if (siteEnableList.indexOf(hostname_full) == -1) {
+  //Special case with .edu domains
+  if (tlDomain == "edu" && siteEnableList.indexOf(hostname_full) == -1) {
       run = false
   }
-  }
-  
-  if (siteDisableList.indexOf(hostname_full) !== -1) {
+  //Check the current site against the non-hardcoded filter list
+  if (siteDisableList.indexOf(hostname_full) !== -1 && siteEnableList.indexOf(hostname_full) == -1) {
     run = false
   }
-  
+//Open the popup
   function openNav() {
     overlayelement.style.height = "100%"
     navOpen = true
     setTimeout(openNav, popupDelay);
   }
-  
+//Close the popup
   function closeNav() {
     overlayelement.style.height = "0%";
     dismissCounter = dismissCounter + 1
@@ -86,17 +81,14 @@ console.trace(siteEnableList)
     dismissCountText.nodeValue = dismissCounter
     
   }
+  //Now that closeNav() has been defined...
   overlayText1.addEventListener('click',function() {
     if (navOpen) {
     closeNav()
     navOpen = false
     }
   })
-
-  function disableThisSession() {
-  //	run = false
-  }
-
+//If the site should have the stay on task popup, then start the setTimeout() loop
   if (run == true) {
       
      openNav();
