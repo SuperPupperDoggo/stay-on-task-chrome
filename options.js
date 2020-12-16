@@ -1,4 +1,4 @@
-//Copyright (c) 2020 SuperPupperDoggo. All Rights Reserved.
+//Copyright (c) 2020 SuperPupperDoggo. See LICENSE for details
 
 //  options.js - Script that handles the extension's options page
 
