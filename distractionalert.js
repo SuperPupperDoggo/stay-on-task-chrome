@@ -1,4 +1,4 @@
-//Copyright (c) 2020 SuperPupperDoggo. All Rights Reserved.
+//Copyright (c) 2020 SuperPupperDoggo. See LICENSE for details.
 
 //  distractionalert.js - Main script of the Stay On Task Chrome extension
 
