@@ -25,7 +25,6 @@
             "*://drawings.google.com/*",
             "https://accounts.google.com/*",
             "https://accounts.youtube.com/*",
-            "https://*.googleusercontent.com",
             "*://canvas.apps.chrome/*",
             "https://kahoot.it/*",
             "https://kahoot.com/*",
