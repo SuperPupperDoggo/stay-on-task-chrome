@@ -21,7 +21,6 @@
             "file://*.ogg",
             "https://kamiapp.com/*",
             "*://*.kamihq.com/*",
-            "https://youtube.com/watch",
             "*://drawings.google.com/*",
             "https://accounts.google.com/*",
             "https://accounts.youtube.com/*",
@@ -58,8 +57,7 @@
             "*://superpupperdoggo.itch.io/1984-the-game/*",
             "*://*.grammarly.com/*",
             "*://*.mindmeister.com/*",
-            "*://*.storyboardthat.com/*",
-            "*://*.freeworldgroup.com/g/i/mu-complex.htm"
+            "*://*.storyboardthat.com/*"
         ],
           "css": ["distractionalert.css"],
           "js": ["distractionalert.js"]
