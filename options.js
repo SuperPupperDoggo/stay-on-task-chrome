@@ -30,16 +30,20 @@ return disabledDays;
     chrome.storage.sync.get({
       sitedisablelist: "example.com",
       siteenablelist: "scratch.mit.edu",
+      sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com",
       popupdelay: 60000,
       disableWD1: false,
       disableWD2: false,
       disableWD3: false,
       disableWD4: true,
-      disableWD5: false
+      disableWD5: false,
+      longpopupdelay: 1800000
     }, function(items) {
       document.getElementById('siteDisableList').value = items.sitedisablelist;
       document.getElementById('siteEnableList').value = items.siteenablelist;
+      document.getElementById('siteSometimesList').value = items.sitesometimeslist;
       document.getElementById('popUpDelay').value = items.popupdelay;
+      document.getElementById('longPopUpDelay').value = items.longpopupdelay;
       document.getElementById('disableWD1').checked = items.disableWD1;
       document.getElementById('disableWD2').checked = items.disableWD2;
       document.getElementById('disableWD3').checked = items.disableWD3;
@@ -51,7 +55,9 @@ return disabledDays;
 function save_options() {
     var setting_sitedisablelist = document.getElementById('siteDisableList').value;
     var setting_siteenablelist = document.getElementById('siteEnableList').value;
+    var setting_sitesometimeslist = document.getElementById('siteSometimesList').value;
     var setting_popupdelay = document.getElementById('popUpDelay').value;
+    var setting_longpopupdelay = document.getElementById('longPopUpDelay').value;
     var setting_disablewd1 = document.getElementById('disableWD1').checked;
     var setting_disablewd2 = document.getElementById('disableWD2').checked;
     var setting_disablewd3 = document.getElementById('disableWD3').checked;
@@ -61,7 +67,9 @@ function save_options() {
     chrome.storage.sync.set({
       sitedisablelist: setting_sitedisablelist,
       popupdelay: setting_popupdelay,
+      longpopupdelay: setting_longpopupdelay,
       siteenablelist: setting_siteenablelist,
+      sitesometimrdlist: setting_sitesometimeslist,
       disableWD1: setting_disablewd1,
       disableWD2: setting_disablewd2,
       disableWD3: setting_disablewd3,
@@ -87,7 +95,7 @@ function save_options() {
 
 savebtn = document.getElementById('save')
 function setUpPage() {
-restore_options()
+restore_options() //Load the options for editing
     var savebtn = document.getElementById("save")
     savebtn.addEventListener('click',function() {
       if (!document.getElementById('popUpDelay').value == "") {

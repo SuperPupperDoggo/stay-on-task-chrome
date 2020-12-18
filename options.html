@@ -11,8 +11,11 @@
         <input id="siteDisableList"></input><br>
         <p>Do run on these sites: </p>
         <input id="siteEnableList"></input><br>
-        <p>Delay Between Popups (ms): </p>
-        <input type="number" id="popUpDelay">[1000 ms = 1s]</input></div><br><br>
+        <p>Do run, but less often on these sites: </p>
+        <input id="siteSometimesList"></input><br>
+        <h4>Delay Between Popups (ms): </h4>
+        Standard: <input type="number" id="popUpDelay">[1000 ms = 1s]</input><br>
+        Long: <input type="number" id="longPopUpDelay"><br><br></div>
         <div id="disabledDays" class="disabledDaySettings">
         <h3>Disable on the weekend and the following days:</h3>
         <input type="checkbox" id="disableWD1">Monday</input><br>
@@ -20,6 +23,11 @@
         <input type="checkbox" id="disableWD3">Wednesday</input><br>
         <input type="checkbox" id="disableWD4">Thursday</input><br>
         <input type="checkbox" id="disableWD5">Friday</input><br><br>
+        <h4><input type="checkbox" id="breakEnabled">And between these times:</input></h4>
+        <p>Break Start:</p>
+        <input type="time" id="breakStart"></input><br>
+        <p>Break End:</p>
+        <input type="time" id="breakEnd"></input><br><br>
         </div>
         <input type="button" id="save" value="Save Changes"></input><br>
         <div id="status"></div>
