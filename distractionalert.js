@@ -12,7 +12,7 @@ var tlDomain = hostname[hostname.length-1]; //Top Level Domain. Used in special 
 var siteDisableList = []; //In case setting(s) don't load properly, it will use the default value(s)
 var siteEnableList = ["scratch.mit.edu"];
 var siteSometimesList = ["jamboard.google.com","www.freeworldgroup.com"];
-var breakTime = [10,43,11,13]
+var breakTime = [10,43,11,13];
 var popupDelay = 60000; //time between the appearance of the popup in ms
 var useLongDelay = false;
 var disabledDays = [0,4,6]; //weekdays on which the popup should be disabled
@@ -53,7 +53,8 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com",
     popupdelay: 60000, //in miliseconds
     longpopupdelay: 1800000,
-    disabledWeekDays: "0,6,4"
+    disabledWeekDays: "0,6,4",
+    breaktime: [10,43,11,13]
   }, function(items) {
     //For some reason despite the variables having been defined outside this function, the values are still lost when the function ends. So I just put everything inside it
     siteDisableList = items.sitedisablelist.split(",");
@@ -62,9 +63,13 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     popupDelay = items.popupdelay;
     longPopupDelay = items.longpopupdelay;
     disabledWeekDays = items.disabledWeekDays.split(",");
+    breakTime = items.breaktime
     cTime = parseInt(date.getHours().toString().concat(date.getMinutes().toString));
     bTimeS = parseInt(breakTime[0].toString().concat(breakTime[1].toString));
     bTimeE = parseInt(breakTime[2].toString().concat(breakTime[3].toString));
+    console.log(cTime)
+    console.log(bTimeS)
+    console.log(bTimeE)
     if (disabledDays.indexOf(date.getDay) !== -1) {
       run = false;
   }
@@ -114,8 +119,8 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   if (run == true) { 
      openNav();
      closeNav();
-  }
-  if (useLongDelay) {
-    openNav();
+     if (useLongDelay) {
+      openNav();
+    }
   }
   });
