@@ -41,6 +41,7 @@ return disabledDays;
       disableWD3: false,
       disableWD4: true,
       disableWD5: false,
+      breakenabled: true,
       breaktime: [10,43,11,13],
       breakstart: "10:43",
       breakend: "11:13",
@@ -56,10 +57,7 @@ return disabledDays;
       document.getElementById('disableWD3').checked = items.disableWD3;
       document.getElementById('disableWD4').checked = items.disableWD4;
       document.getElementById('disableWD5').checked = items.disableWD5;
-      //breaktimeS0 = toString(items.breakTime[0]);
-      //breaktimeS1 = toString(items.breakTime[1]);
-      //breaktimeS2 = toString(items.breakTime[2]);
-      //breaktimeS3 = toString(items.breakTime[3]);
+      document.getElementById('breakEnabled').checked = items.breakenabled;
       document.getElementById('breakStart').value = items.breakstart;
       document.getElementById('breakEnd').value =  items.breakend;
     });
@@ -77,8 +75,9 @@ function save_options() {
     var setting_disablewd4 = document.getElementById('disableWD4').checked;
     var setting_disablewd5 = document.getElementById('disableWD5').checked;
     var setting_disabledWeekDays = createDisabledWeekdays(setting_disablewd1,setting_disablewd2,setting_disablewd3,setting_disablewd4,setting_disablewd5);
-    var breakStart = document.getElementById('breakStart').value
-    var breakEnd = document.getElementById('breakEnd').value
+    var breakEnabled = document.getElementById('breakEnabled').checked;
+    var breakStart = document.getElementById('breakStart').value;
+    var breakEnd = document.getElementById('breakEnd').value;
     var breakTimeS = document.getElementById('breakStart').value.split(":");
     breakTimeS.push(document.getElementById('breakEnd').value.split(":")[0]);
     breakTimeS.push(document.getElementById('breakEnd').value.split(":")[1]);
@@ -95,8 +94,11 @@ function save_options() {
     if (bTimeE < bTimeS) {
       window.alert("WARNING: The break start time is set to before the break end time. This may cause issues related to the break time feature.");
     }
-    if (setting_popupdelay > setting_longpopupdelay) {
-      window.alert("WARNING: The long popup delay is shorter than the standard popup delay")
+    console.log(setting_popupdelay)
+    console.log("is greater than")
+    console.log(setting_longpopupdelay)
+    if (parseInt(setting_popupdelay) > parseInt(setting_longpopupdelay)) { //For some reason one of them is not an integer to start???
+      window.alert("WARNING: The long popup delay is shorter than the standard popup delay\n".concat(setting_popupdelay).concat(">").concat(setting_longpopupdelay))
     }
     if (setting_popupdelay < 15000) {
       window.alert("WARNING: The popup delay is less than 15 seconds. As this may be annoying and counterproductive, it is only recommended for debugging purposes.")
@@ -121,7 +123,8 @@ function save_options() {
       disabledWeekDays: setting_disabledWeekDays,
       breaktime: breakTimeS,
       breakstart: breakStart,
-      breakend: breakEnd
+      breakend: breakEnd,
+      breakenabled: breakEnabled
     }, function() {
       // Update status to let user know options were saved.
       var status = document.getElementById('status');
@@ -144,8 +147,83 @@ function setUpPage() {
 restore_options() //Load the options for editing
     var savebtn = document.getElementById("save")
     savebtn.addEventListener('click',function() {
-      if (!document.getElementById('popUpDelay').value == "") {
+      if (document.getElementById('popUpDelay').value !== "" && document.getElementById('longPopUpDelay').value !== "") {
       save_options()
       }
-    })
+    });
+    var resetbtn = document.getElementById("reset");
+    resetbtn.addEventListener('click',function() {
+      if (window.confirm("Are you sure you want to reset all settings to their default values?")) {
+      chrome.storage.sync.clear()
+      location.reload()
+      }
+    });
+    var advancedsection = document.getElementById('advancedSettings');
+    var advancedbtn = document.getElementById('advancedBtn');
+    advancedbtn.addEventListener('click',function() {
+      if (advancedsection.style.display=='none') {
+        advancedsection.style.display=''
+      } else {
+        advancedsection.style.display='none'
+      }
+    });
+    var breakEnabledBox = document.getElementById('breakEnabled');
+    var breakTimeSection = document.getElementById('breakTimes');
+    breakEnabledBox.addEventListener('click',function() {
+      if (breakEnabledBox.checked) {
+        breakTimeSection.style.display=''
+      } else {
+        breakTimeSection.style.display='none'
+      }
+    });
+    
+    var cfgInputBtn = document.getElementById("configUpload")
+    cfgInputBtn.addEventListener('click',function() {
+    var inputData = window.prompt("Paste the config string below")
+    var config = atob(inputData).split(";")
+      document.getElementById('siteDisableList').value = config[0];
+      document.getElementById('siteEnableList').value = config[1];
+      document.getElementById('siteSometimesList').value = config[2];
+      document.getElementById('popUpDelay').value = parseInt(config[3]);
+      document.getElementById('longPopUpDelay').value = parseInt(config[4]);
+      wDays = config[5].split("-")
+      document.getElementById('disableWD1').checked = (wDays[0] == "y")
+      document.getElementById('disableWD2').checked = (wDays[1] == "y")
+      document.getElementById('disableWD3').checked = (wDays[2] == "y");
+      document.getElementById('disableWD4').checked = (wDays[3] == "y")
+      document.getElementById('disableWD5').checked = (wDays[4] == "y");
+      document.getElementById('breakEnabled').checked = (config[6] == "true");
+      document.getElementById('breakStart').value = config[7];
+      document.getElementById('breakEnd').value =  config[8];
+    });
+  var cfgOutputBtn = document.getElementById("configDownload")
+  cfgOutputBtn.addEventListener('click',function() {
+    setting_sitedisablelist = document.getElementById('siteDisableList').value;
+    setting_siteenablelist = document.getElementById('siteEnableList').value;
+    setting_sitesometimeslist = document.getElementById('siteSometimesList').value;
+    setting_popupdelay = document.getElementById('popUpDelay').value;
+    setting_longpopupdelay = document.getElementById('longPopUpDelay').value;
+    setting_disablewd1 = document.getElementById('disableWD1').checked;
+    setting_disablewd2 = document.getElementById('disableWD2').checked;
+    setting_disablewd3 = document.getElementById('disableWD3').checked;
+    setting_disablewd4 = document.getElementById('disableWD4').checked;
+    setting_disablewd5 = document.getElementById('disableWD5').checked;
+    var daysBool = [setting_disablewd1,setting_disablewd2,setting_disablewd3,setting_disablewd4,setting_disablewd5];
+    var i;
+    for (i = 0; i < 4; i++) { 
+      if (daysBool[i]) {
+        daysBool[i] = "y"
+      } else {
+        daysBool[i] = "n"
+      }
+    }
+    var days = daysBool.join("-")
+    breakEnabled = document.getElementById('breakEnabled').checked;
+    breakStart = document.getElementById('breakStart').value;
+    breakEnd = document.getElementById('breakEnd').value;
+    var datList = [setting_sitedisablelist,setting_siteenablelist,setting_sitesometimeslist,setting_popupdelay,setting_longpopupdelay,days,breakEnabled,breakStart,breakEnd];
+    var datFinal = btoa(datList.join(";"));
+    var datText = document.createTextNode(datFinal);
+    advancedsection.append(datText);
+  });
 }

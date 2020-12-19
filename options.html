@@ -8,14 +8,14 @@
         <div id="generalSettings" class="generalSettings">
         <h3>General Settings:</h3>
         <p>Do not run on these sites: </p>
-        <input id="siteDisableList"></input><br>
+        <input id="siteDisableList" placeholder="Disable on..."></input><br>
         <p>Do run on these sites: </p>
-        <input id="siteEnableList"></input><br>
+        <input id="siteEnableList" placeholder="Enable on..."></input><br>
         <p>Do run, but less often on these sites: </p>
         <input id="siteSometimesList"></input><br>
         <h4>Delay Between Popups (ms): </h4>
-        Standard: <input type="number" id="popUpDelay">[1000 ms = 1s]</input><br>
-        Long: <input type="number" id="longPopUpDelay"><br><br></div>
+        Standard: <input type="number" min=0 placeholder="Popup Delay" id="popUpDelay">[1000 ms = 1s]</input><br>
+        Long: <input type="number" min=0 placeholder="Long Popup Delay" id="longPopUpDelay"><br><br></div>
         <div id="disabledDays" class="disabledDaySettings">
         <h3>Disable on the weekend and the following days:</h3>
         <input type="checkbox" id="disableWD1">Monday</input><br>
@@ -24,12 +24,21 @@
         <input type="checkbox" id="disableWD4">Thursday</input><br>
         <input type="checkbox" id="disableWD5">Friday</input><br><br>
         <h4><input type="checkbox" id="breakEnabled">And between these times:</input></h4>
+        <div id="breakTimes">
         <p>Break Start:</p>
         <input type="time" id="breakStart"></input><br>
         <p>Break End:</p>
         <input type="time" id="breakEnd"></input><br><br>
-        </div>
-        <input type="button" id="save" value="Save Changes"></input><br>
+        </div></div>
+        <button title="Click to show/hide content" type="button" id="advancedBtn">Show/hide advanced settings</button><br>
+        <div id="advancedSettings" class="advancedSettings" style="display: none">
+            <h4>Advanced Settings</h4>
+            <input type="button" id="configUpload" value="Import Config"></input><br>
+            <input type="button" id="configDownload" value="Export Config"></input>
+        </div><br>
+        <input type="button" id="save" value="Save Changes"></input>
+        <input type="button" id="reset" value="Reset to default"></input>
+        <br>
         <div id="status"></div>
     </body>
 

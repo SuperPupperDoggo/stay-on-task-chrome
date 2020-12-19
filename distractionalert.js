@@ -17,7 +17,7 @@ var popupDelay = 60000; //time between the appearance of the popup in ms
 var useLongDelay = false;
 var disabledDays = [0,4,6]; //weekdays on which the popup should be disabled
 var navOpen = false; //Is the popup open? Used to prevent accedental incrementation of the dismiss counter
-var isBreakTime = false
+var breakEnabled = true
 
 //Setup overlay
 let overlayelement = document.createElement("div", [id='distractionOverlay']); //The main overlay element
@@ -55,7 +55,8 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     popupdelay: 60000, //in miliseconds
     longpopupdelay: 1800000,
     disabledWeekDays: "0,6,4",
-    breaktime: [10,43,11,13]
+    breaktime: [10,43,11,13],
+    breakenabled: true
   }, function(items) {
     //For some reason despite the variables having been defined outside this function, the values are still lost when the function ends. So I just put everything inside it
     siteDisableList = items.sitedisablelist.split(",");
@@ -65,6 +66,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     longPopupDelay = items.longpopupdelay;
     disabledWeekDays = items.disabledWeekDays.split(",");
     breakTime = items.breaktime
+    breakEnabled = items.breakenabled
 
     if (disabledDays.indexOf(date.getDay) !== -1) {
       run = false;
@@ -83,14 +85,11 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     bTimeS.setHours(breakTime[0],breakTime[1],0); // break start date object
     bTimeE = new Date();
     bTimeE.setHours(breakTime[2],breakTime[3],0); // break end date object
-    if(cTime >= bTimeS && cTime < bTimeE ){
-    console.debug("Is break time")
-    console.debug(bTimeE)
-    console.debug("should be later than")
-    console.debug(cTime)
+    if(cTime >= bTimeS && cTime < bTimeE && breakEnabled){
+    console.debug("It is break time, popup overruled")
       return true
     } else {
-      console.debug("Is not break time")
+      console.debug("It is not break time or break time is disabled")
       return false
   }
   }
@@ -120,8 +119,8 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   function closeNav() {
     overlayelement.style.height = "0%";
     if (dismissCounter >= 4) {
-      overlayelement.style.backgroundColor = "rgba("+0+","+100+","+200+","+ 0.5+")" //Make the reminder a bit less translucent after 5 dismissals. Yes, it seems that if you want to use an RGB value, it has to be this complicated.
-      console.debug("Decreasing opacity")
+      overlayelement.style.backgroundColor = "rgba("+0+","+100+","+200+","+ 0.5+")" //Make the reminder a bit less translucent after 5 dismissals.
+      console.debug("Decreasing opacity of popup")
     }
     dismissCounter = dismissCounter + 1
     navOpen = false
@@ -140,7 +139,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
      openNav();
      closeNav();
      if (useLongDelay) {
-      openNav();
+      openNav(); //Show the popup after the page finishes loading
     }
   }
   });
