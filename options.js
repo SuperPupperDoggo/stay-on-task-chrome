@@ -19,7 +19,7 @@ if (tue == true) {
   disabledDays = disabledDays.concat(",2");
 }
 if (wed == true) {
-  disabledDays = cdisabledDays.concat(",3");
+  disabledDays = disabledDays.concat(",3");
 }
 if (thu == true) {
   disabledDays = disabledDays.concat(",4");
@@ -86,7 +86,27 @@ function save_options() {
     breakTimeS[1] = parseInt(breakTimeS[1])
     breakTimeS[2] = parseInt(breakTimeS[2])
     breakTimeS[3] = parseInt(breakTimeS[3])
+    cTime = new Date();
+    bTimeS = new Date();
+    bTimeS.setHours(breakTimeS[0],breakTimeS[1],0); // break start date object
+    bTimeE = new Date();
+    bTimeE.setHours(breakTimeS[2],breakTimeS[3],0); // break end date object
     console.log(breakTimeS)
+    if (bTimeE < bTimeS) {
+      window.alert("WARNING: The break start time is set to before the break end time. This may cause issues related to the break time feature.");
+    }
+    if (setting_popupdelay > setting_longpopupdelay) {
+      window.alert("WARNING: The long popup delay is shorter than the standard popup delay")
+    }
+    if (setting_popupdelay < 15000) {
+      window.alert("WARNING: The popup delay is less than 15 seconds. As this may be annoying and counterproductive, it is only recommended for debugging purposes.")
+    }
+    if (setting_longpopupdelay < 300000) {
+      window.alert("WARNING: The long popup delay is less than 5 minutes. As this may be annoying and counterproductive, it is only recommended for debugging purposes.")
+    }
+    if (setting_disablewd1 && setting_disablewd2 && setting_disablewd3 && setting_disablewd4 && setting_disablewd5) {
+      window.alert("WARNING: The extension is effectivley disabled. As such it will not be able to help you unless you re-enable 1 or more weekdays.")
+    }
     chrome.storage.sync.set({
       sitedisablelist: setting_sitedisablelist,
       popupdelay: setting_popupdelay,

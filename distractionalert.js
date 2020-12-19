@@ -17,8 +17,9 @@ var popupDelay = 60000; //time between the appearance of the popup in ms
 var useLongDelay = false;
 var disabledDays = [0,4,6]; //weekdays on which the popup should be disabled
 var navOpen = false; //Is the popup open? Used to prevent accedental incrementation of the dismiss counter
+var isBreakTime = false
 
-
+//Setup overlay
 let overlayelement = document.createElement("div", [id='distractionOverlay']); //The main overlay element
 overlayelement.setAttribute("id","distractionOverlay");
 let overlayText1 = document.createElement("a"); //Stylized interactive "Are you still on task" button/text
@@ -64,12 +65,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     longPopupDelay = items.longpopupdelay;
     disabledWeekDays = items.disabledWeekDays.split(",");
     breakTime = items.breaktime
-    cTime = parseInt(date.getHours().toString().concat(date.getMinutes().toString));
-    bTimeS = parseInt(breakTime[0].toString().concat(breakTime[1].toString));
-    bTimeE = parseInt(breakTime[2].toString().concat(breakTime[3].toString));
-    console.log(cTime)
-    console.log(bTimeS)
-    console.log(bTimeE)
+
     if (disabledDays.indexOf(date.getDay) !== -1) {
       run = false;
   }
@@ -81,33 +77,57 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   if (siteDisableList.indexOf(hostname_full) !== -1 && siteEnableList.indexOf(hostname_full) == -1) {
     run = false
   }
-  if (cTime >= bTimeS && cTime <= bTimeE) {
-    run = false
+  function checkTime() {
+    cTime = new Date();
+    bTimeS = new Date();
+    bTimeS.setHours(breakTime[0],breakTime[1],0); // break start date object
+    bTimeE = new Date();
+    bTimeE.setHours(breakTime[2],breakTime[3],0); // break end date object
+    if(cTime >= bTimeS && cTime < bTimeE ){
+    console.debug("Is break time")
+    console.debug(bTimeE)
+    console.debug("should be later than")
+    console.debug(cTime)
+      return true
+    } else {
+      console.debug("Is not break time")
+      return false
+  }
   }
   if (siteSometimesList.indexOf(hostname_full) !== -1 && siteEnableList.indexOf(hostname_full) == -1) {
     popUpDelay = longPopupDelay
     useLongDelay = true
     linkText.nodeValue = "Do you need to use this site?"
     dismissText.nodeValue = "You have awnsered yes "
+    console.debug("Using long delay for this site")
   }
+
+
 //Open the popup
   function openNav() {
+    if (checkTime() == false) {
     overlayelement.style.height = "100%"
     navOpen = true
+  }
     if (useLongDelay) {
       setTimeout(openNav, longPopupDelay);
     } else {
       setTimeout(openNav, popupDelay);
     }
     
-  }
+}
 //Close the popup
   function closeNav() {
     overlayelement.style.height = "0%";
+    if (dismissCounter >= 4) {
+      overlayelement.style.backgroundColor = "rgba("+0+","+100+","+200+","+ 0.5+")" //Make the reminder a bit less translucent after 5 dismissals. Yes, it seems that if you want to use an RGB value, it has to be this complicated.
+      console.debug("Decreasing opacity")
+    }
     dismissCounter = dismissCounter + 1
     navOpen = false
     dismissCountText.nodeValue = dismissCounter
   }
+  
   //Now that closeNav() has been defined...
   overlayText1.addEventListener('click',function() {
     if (navOpen) {

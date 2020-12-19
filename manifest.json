@@ -1,7 +1,7 @@
 {
     "name": "Stay On Task",
     "version": "1.1",
-    "version_name": "1.1-dev1",
+    "version_name": "1.1-dev2",
     "description": "This is a custom extension to gently remind you about staying on task.",
     "manifest_version": 2,
     "author": "Nathan H.",
