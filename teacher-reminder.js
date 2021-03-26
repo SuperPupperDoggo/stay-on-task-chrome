@@ -1,3 +1,5 @@
+//Copyright (c) 2020-2021 SuperPupperDoggo. See LICENSE for details.
+
 //Error Callback
 function errorCB() {
   //Display an error
