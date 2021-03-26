@@ -1,3 +1,5 @@
+//Copyright (c) 2020-2021 SuperPupperDoggo. See LICENSE for details.
+
 var lastreminder = 0;
 var warningExpirationTime = 300000;
 
