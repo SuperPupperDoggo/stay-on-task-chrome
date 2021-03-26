@@ -1,9 +1,10 @@
-//Copyright (c) 2020 SuperPupperDoggo. See LICENSE for details.
+//Copyright (c) 2020-2021 SuperPupperDoggo. See LICENSE for details.
 
 //  distractionalert.js - Main script of the Stay On Task Chrome extension
 
 //Setup Variables
 var run = true; //Whether or not the popup should appear
+var locked = false; //Whether or not the tab should be locked
 var dismissCounter = -1; //How many times the user has dismissed the popup. It is shown and quickly hidden during page loading to start the setTimeout() loop, thus it is set to -1
 var date = new Date(); //The Current Date. Used for the disabled weekdays option.
 var hostname_full = window.location.hostname; //Used for matching against non-hardcoded rules
@@ -13,11 +14,11 @@ var siteDisableList = []; //In case setting(s) don't load properly, it will use 
 var siteEnableList = ["scratch.mit.edu"];
 var siteSometimesList = ["jamboard.google.com","www.freeworldgroup.com","desmos.com","app.roll20.net"];
 var breakTime = [10,43,11,13];
-var popupDelay = 60000; //time between the appearance of the popup in ms
-var useLongDelay = false;
-var disabledDays = [0,4,6]; //weekdays on which the popup should be disabled
+var popupDelay = 60000; //Time between the appearance of the popup in ms
+var useLongDelay = false; //Should the site use the alternative popup mode
+var disabledDays = [0,4,6]; //Weekdays on which the popup should be disabled
+var breakEnabled = true //Is the break time function enabled
 var navOpen = false; //Is the popup open? Used to prevent accedental incrementation of the dismiss counter
-var breakEnabled = true
 
 //Setup overlay
 let overlayelement = document.createElement("div", [id='distractionOverlay']); //The main overlay element
@@ -41,7 +42,7 @@ var dismissText2C = document.createElement("div"); //Container element for stati
 dismissText2C.appendChild(dismissText2); //Add static text 2 to container
 dismissText2C.className = "overlay-text"; //Stylize
 overlayelement.className = "overlay";
-overlayelement.appendChild(overlayText1);
+overlayelement.appendChild(overlayText1); //Assemble the page overlay
 overlayelement.appendChild(dismissTextC);
 overlayelement.appendChild(dismissCountTextC);
 overlayelement.appendChild(dismissText2C);
@@ -52,8 +53,8 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     sitedisablelist: "",
     siteenablelist: "scratch.mit.edu",
     sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com,desmos.com,app.roll20.net",
-    popupdelay: 60000, //in miliseconds
-    longpopupdelay: 1800000,
+    popupdelay: 60000, //in milliseconds
+    longpopupdelay: 1800000, //also in milliseconds
     disabledWeekDays: "0,6,4",
     breaktime: [10,43,11,13],
     breakenabled: true
@@ -68,7 +69,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     breakTime = items.breaktime
     breakEnabled = items.breakenabled
 
-    if (disabledDays.indexOf(date.getDay) !== -1) {
+  if (disabledDays.indexOf(date.getDay) !== -1) {
       run = false;
   }
   //Special case with .edu domains
@@ -132,7 +133,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   
   //Now that closeNav() has been defined...
   overlayText1.addEventListener('click',function() {
-    if (navOpen) {
+    if (navOpen && locked == false) {
     closeNav()
     navOpen = false
     }
