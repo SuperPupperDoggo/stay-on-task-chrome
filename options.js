@@ -34,7 +34,7 @@ return disabledDays;
     chrome.storage.sync.get({
       sitedisablelist: "example.com",
       siteenablelist: "scratch.mit.edu",
-      sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com",
+      sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com,desmos.com,app.roll20.net",
       popupdelay: 60000,
       disableWD1: false,
       disableWD2: false,
