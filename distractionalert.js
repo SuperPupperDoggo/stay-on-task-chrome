@@ -26,7 +26,7 @@ let overlayText1 = document.createElement("a"); //Stylized interactive "Are you 
 var linkText = document.createTextNode("Are you still on task?");
 overlayText1.appendChild(linkText); //Append to the main overlay element
 overlayText1.title = "Are you still on task?";
-overlayText1.href = "javascript:void(0)";
+overlayText1.href = "javascript:void(0)"; //Make it behave like a link, but don't go anywhere
 overlayText1.className = "overlay-content"; //Stylize
 var dismissText = document.createTextNode("You have dismissed this popup "); //Dismiss counter static text 1
 var dismissTextC = document.createElement("div"); //Container element for static text 1
@@ -51,7 +51,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   chrome.storage.sync.get({
     sitedisablelist: "",
     siteenablelist: "scratch.mit.edu",
-    sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com",
+    sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com,app.roll20.net",
     popupdelay: 60000, //in miliseconds
     longpopupdelay: 1800000,
     disabledWeekDays: "0,6,4",
@@ -107,13 +107,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     if (checkTime() == false) {
     overlayelement.style.height = "100%"
     navOpen = true
-  }
-    if (useLongDelay) {
-      setTimeout(openNav, longPopupDelay);
-    } else {
-      setTimeout(openNav, popupDelay);
-    }
-    
+  } 
 }
 //Close the popup
   function closeNav() {
@@ -125,6 +119,11 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
     dismissCounter = dismissCounter + 1
     navOpen = false
     dismissCountText.nodeValue = dismissCounter
+    if (useLongDelay) {
+      setTimeout(openNav, longPopupDelay);
+    } else {
+      setTimeout(openNav, popupDelay);
+    }
   }
   
   //Now that closeNav() has been defined...
