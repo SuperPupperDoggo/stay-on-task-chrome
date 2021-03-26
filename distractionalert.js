@@ -11,7 +11,7 @@ var hostname = window.location.hostname.split("."); //splits up the hostname int
 var tlDomain = hostname[hostname.length-1]; //Top Level Domain. Used in special rule cases.
 var siteDisableList = []; //In case setting(s) don't load properly, it will use the default value(s)
 var siteEnableList = ["scratch.mit.edu"];
-var siteSometimesList = ["jamboard.google.com","www.freeworldgroup.com"];
+var siteSometimesList = ["jamboard.google.com","www.freeworldgroup.com","desmos.com","app.roll20.net"];
 var breakTime = [10,43,11,13];
 var popupDelay = 60000; //time between the appearance of the popup in ms
 var useLongDelay = false;
@@ -51,7 +51,7 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
   chrome.storage.sync.get({
     sitedisablelist: "",
     siteenablelist: "scratch.mit.edu",
-    sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com,app.roll20.net",
+    sitesometimeslist: "jamboard.google.com,www.freeworldgroup.com,desmos.com,app.roll20.net",
     popupdelay: 60000, //in miliseconds
     longpopupdelay: 1800000,
     disabledWeekDays: "0,6,4",
@@ -104,16 +104,20 @@ document.body.append(overlayelement); //Add the assembled overlay to the page bo
 
 //Open the popup
   function openNav() {
-    if (checkTime() == false) {
+    if (checkTime() == false && run == true) {
     overlayelement.style.height = "100%"
     navOpen = true
-  } 
+  }
 }
 //Close the popup
   function closeNav() {
     overlayelement.style.height = "0%";
-    if (dismissCounter >= 4) {
+    if (dismissCounter == 5) {
       overlayelement.style.backgroundColor = "rgba("+0+","+100+","+200+","+ 0.5+")" //Make the reminder a bit less translucent after 5 dismissals.
+      console.debug("Decreasing opacity of popup")
+    }
+    if (dismissCounter == 10) {
+      overlayelement.style.backgroundColor = "rgba("+0+","+100+","+200+","+ 0.7+")" //Make the reminder a even less translucent after 10 dismissals.
       console.debug("Decreasing opacity of popup")
     }
     dismissCounter = dismissCounter + 1
